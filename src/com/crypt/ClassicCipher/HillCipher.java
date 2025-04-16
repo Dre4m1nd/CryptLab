@@ -267,15 +267,42 @@ public class HillCipher {
         return plainText.toString().replaceAll("A+$", "");
     }
 
+    /**
+     * 检验输入的密钥矩阵是否有模26的逆
+     * @param matrix 密钥矩阵
+     * @param n 阶数
+     * @return 密钥矩阵是否有模26的逆
+     */
     private static boolean isKeyMatrixInvertible(int[][] matrix, int n) {
         return gcd(matrixDet(matrix, n), 26) == 1;
     }
 
+    /**
+     * 检验输入的阶数是否正确
+     * @param scanner 输入
+     * @return 是否正确
+     */
+    private static int getValidOrder(Scanner scanner) {
+        while (true) {
+            try {
+                System.out.print("请选择阶数(2/3)：");
+                int n = scanner.nextInt();
+                scanner.nextLine(); // 消耗换行符
+                if (n == 2 || n == 3) {
+                    return n;
+                }
+                System.out.println("错误：请选择正确的阶数。");
+            } catch (Exception e) {
+                System.out.println("错误：输入无效，请输入一个数字。");
+                scanner.nextLine(); // 消耗无效输入
+            }
+        }
+    }
+
     public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
-        System.out.println("Hill Cipher 加解密系统");
-        System.out.println("============================================================");
-        try {
+        try (Scanner scanner = new Scanner(System.in)) {
+            System.out.println("Hill Cipher 加解密系统");
+            System.out.println("============================================================");
             while (true) {
                 try {
                     System.out.print("选择加密,解密还是退出?(E/D/Q)");
@@ -314,26 +341,9 @@ public class HillCipher {
                     System.out.println("错误：" + e.getMessage() + "，请重新输入。");
                 }
             }
-        } finally {
-            scanner.close();
         }
     }
 
-    private static int getValidOrder(Scanner scanner) {
-        while (true) {
-            try {
-                System.out.print("请选择阶数(2/3)：");
-                int n = scanner.nextInt();
-                scanner.nextLine(); // 消耗换行符
-                if (n == 2 || n == 3) {
-                    return n;
-                }
-                System.out.println("错误：请选择正确的阶数。");
-            } catch (Exception e) {
-                System.out.println("错误：输入无效，请输入一个数字。");
-                scanner.nextLine(); // 消耗无效输入
-            }
-        }
-    }
+
 
 }
